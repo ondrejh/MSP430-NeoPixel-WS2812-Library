@@ -7,3 +7,10 @@
 targetConfigs/
 .launches/
 Debug/
+*.o
+example/*.o
+*.d
+example/*.elf
+example/*.hex
+example/*.map
+example/*.txt

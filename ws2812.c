@@ -16,7 +16,11 @@ void initStrip() {
     P1SEL2 |= OUTPUT_PIN;
     UCB0CTL0 |= UCCKPH + UCMSB + UCMST + UCSYNC; // 3-pin, MSB, 8-bit SPI master
     UCB0CTL1 |= UCSSEL_2;   // SMCLK source (16 MHz)
+	#ifdef CLOCK_8MHZ
+    UCB0BR0 = 1;            // 8 MHz / 2 = .125 us per bit
+	#else
     UCB0BR0 = 3;            // 16 MHz / 3 = .1875 us per bit
+	#endif
     UCB0BR1 = 0;
     UCB0CTL1 &= ~UCSWRST;   // Initialize USCI state machine
     clearStrip();           // clear the strip
@@ -58,7 +62,7 @@ void showStrip() {
     }
 
     // send RES code for at least 50 us (800 cycles at 16 MHz)
-    _delay_cycles(800);
+    __delay_cycles(800);
 
     __bis_SR_register(GIE);    // enable interrupts
 }
